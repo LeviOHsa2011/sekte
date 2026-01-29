@@ -1,28 +1,29 @@
-// Smooth Reveal beim Scrollen
-const revealElements = document.querySelectorAll('.glass, h1, p');
+function triggerEasterEgg() {
+    
+    const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, p, span, a, footer, li, .slice-title');
+    
+    allElements.forEach(el => {
+        
+        if (el.childNodes.length > 0) {
+            el.childNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE && node.nodeValue.includes('Jugend')) {
+                    node.nodeValue = node.nodeValue.replace(/Jugend/g, 'Juden');
+                }
+            });
+        }
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
+        
+        if (el.hasAttribute('data-text')) {
+            let currentData = el.getAttribute('data-text');
+            if (currentData.includes('Jugend')) {
+                el.setAttribute('data-text', currentData.replace(/Jugend/g, 'Juden'));
+            }
         }
     });
-}, { threshold: 0.1 });
+    console.log("Mission erfüllt: Luca wird sich wundern.");
+}
 
-revealElements.forEach(el => {
-    el.style.opacity = "0";
-    el.style.transform = "translateY(30px)";
-    el.style.transition = "all 0.8s cubic-bezier(0.19, 1, 0.22, 1)";
-    observer.observe(el);
+
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(triggerEasterEgg, 2500); 
 });
-
-// Parallax Effekt für den Background
-window.addEventListener('mousemove', (e) => {
-    const bg = document.querySelector('.deep-bg');
-    const x = (e.clientX / window.innerWidth) * 20;
-    const y = (e.clientY / window.innerHeight) * 20;
-    bg.style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
-});
-
-
